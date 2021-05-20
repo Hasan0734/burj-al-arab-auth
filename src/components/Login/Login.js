@@ -14,7 +14,7 @@ export const firebasrInitialize = () => {
 };
 const Login = () => {
   const [loggedInUser, setLoggedInUser] = useContext(UserContext);
-
+  const [error, setError] = useState('')
   const history = useHistory();
   const location = useLocation();
   const { from } = location.state || { from: { pathname: "/" } };
@@ -34,6 +34,7 @@ const Login = () => {
       })
       .catch((error) => {
         var errorMessage = error.message;
+        setError(errorMessage)
         console.log(errorMessage);
       });
   };
@@ -53,7 +54,7 @@ const Login = () => {
     })
     .catch((error) => {
       var errorMessage = error.message;
-      // ..
+      setError(errorMessage)
       console.log(errorMessage);
     });    
    }
@@ -69,6 +70,7 @@ const Login = () => {
     .catch((error) => {
      
       var errorMessage = error.message;
+      setError(errorMessage)
       console.log(errorMessage)
     });
   };
@@ -90,10 +92,13 @@ const Login = () => {
 
   return (
     <div>
-      <h1>This is Login</h1>
+      <div style={{margin:'auto', width: '300px'}}>
+       <h1>Welcome</h1>
       <button onClick={handleGoogleSignIn}>Google Sign in</button>
       <button onClick={() => setSignInInfo(false)}>Sign in </button>
       <button onClick={() => setSignInInfo(true)}>Sign up</button>
+      </div>
+
 
    <form className="input-form" onSubmit={handleSubmit(onSubmit)}>
       {
@@ -119,8 +124,9 @@ const Login = () => {
         )}
 
         <input className="submit" type="submit" value = {signInInfo ? 'Sign up': 'Sign in' } />
+        <p className="error">{error}</p>
       </form>
-    
+          
     </div>
   );
 };

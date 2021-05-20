@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import './Header.css';
 import header from '../../images/header.png';
 import logo from '../../images/icons/logo.png';
+import firebase from 'firebase';
+import { UserContext } from '../../App';
 
 const Header = () => {
+    const [loggedInUser, setLoggedInUser] = useContext(UserContext)
+    const signOut = () => {
+        firebase.auth().signOut().then(() => {
+            setLoggedInUser({})
+          }).catch((error) => {
+            console.log(error.message)
+          });
+    }
     return (
         <div style={{ backgroundImage: `linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(${header})` }} className="header">
             <nav className="nav">
@@ -20,6 +30,9 @@ const Header = () => {
                     </li>
                     <li>
                         <Link className="btn-book" to="/book">Book</Link>
+                    </li>
+                    <li>
+                        <span style={{color: 'white'}}>{loggedInUser.name} </span><button onClick={signOut}>Sign out</button>
                     </li>
                 </ul>
             </nav>
